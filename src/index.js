@@ -121,7 +121,7 @@ class Website extends React.Component {
 		};
 
 		this.setState({
-			curreBlockNumber: currBlockNumber,
+			currBlockNumber: currBlockNumber,
 			currGasPrice: currGasPrice,
 			feeHistory: feeHistory,
 			currPriorityFee: Number(currPriorityFee.toFixed(2)),
@@ -154,23 +154,45 @@ class Website extends React.Component {
 
 		return(
 			<div className="container body-all">
-				<div className="chart-container">
+				<div className="row">
+					<div className="col-8">
 					<Line data={this.state.chartData} options={this.state.options} />
+					</div>
+					<div className="col-4">
+						<div className="col card ml-2 mt-5 text-success border-success bg-transparent">
+						  <div className="card-header bg-transparent"><b>Network</b></div>
+						  <div className="card-body text-success">
+						    <p className="card-text display-6">Ethereum Mainnet</p>
+						  </div>
+						</div>
+						<div className="col card ml-2 mt-4 text-secondary border-secondary bg-transparent">
+						  <div className="card-header bg-transparent"><b>Avg Gas fee for last 20 blocks</b></div>
+						  <div className="card-body text-secondary">
+						    <p className="card-text display-5">{this.state.avgFee} Gwei</p>
+						  </div>
+						</div>
+					</div>
 				</div>
 				<hr />
 				<div className="text-center">
 					<h5>Current Gas Fee Numbers</h5>
 					<br />
 					<div className="row d-flex">
+						<div className="col card text-secondary border-secondary bg-transparent">
+						  <div className="card-header bg-transparent"><b>Current Block Number</b></div>
+						  <div className="card-body text-secondary">
+						    <p className="card-text display-5">{this.state.currBlockNumber}</p>
+						  </div>
+						</div>
 						<div className="col card text-success border-success bg-transparent">
 						  <div className="card-header bg-transparent"><b>Current Base Fee</b></div>
 						  <div className="card-body text-success">
 						    <p className="card-text display-5">{this.state.currBaseFee} Gwei</p>
 						  </div>
 						</div>
-						<div className="col card text-secondary border-secondary bg-transparent">
+						<div className="col card text-dark border-dark bg-transparent">
 						  <div className="card-header bg-transparent"><b>Current Priority Fee</b></div>
-						  <div className="card-body text-secondary">
+						  <div className="card-body text-dark">
 						    <p className="card-text display-5">{this.state.currPriorityFee} Gwei</p>
 						  </div>
 						</div>
@@ -178,12 +200,6 @@ class Website extends React.Component {
 						  <div className="card-header bg-transparent"><b>Total Current Fee</b></div>
 						  <div className="card-body text-success">
 						    <p className="card-text display-5">{currTotalFee} Gwei</p>
-						  </div>
-						</div>
-						<div className="col card text-dark border-dark bg-transparent">
-						  <div className="card-header bg-transparent"><b>Average Fee for last 20 blocks</b></div>
-						  <div className="card-body text-dark">
-						    <p className="card-text display-5">{this.state.avgFee} Gwei</p>
 						  </div>
 						</div>
 					</div>
