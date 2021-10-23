@@ -88,25 +88,25 @@ class Website extends React.Component {
 		  labels: labels,
 		  datasets: [
 		    {
-		      label: 'Avg Priority Fee block ID',
+		      label: 'Avg Priority Fee per gas for block ID',
 		      data: calculated[3],
 		      fill: true,
 		      backgroundColor: '#ADD8E6',
-		      borderColor: 'green',
+		      borderColor: '#003C54',
 		    },
 		    {
-		      label: 'Base Fee block ID',
+		      label: 'Base Fee per gas for block ID',
 		      data: calculated[2],
 		      fill: false,
-		      backgroundColor: '#ADD8E6',
+		      backgroundColor: '#ff9889',
 		      borderColor: 'red',
 		    },
 		    {
-		      label: 'Gas price for block ID',
+		      label: 'Total Gas price per gas for block ID',
 		      data: calculated[1],
 		      fill: false,
-		      backgroundColor: '#ADD8E6',
-		      borderColor: '#1E5162',
+		      backgroundColor: '#ffc837',//'#ccf6ef',
+		      borderColor: '#ffc837',//'#338f85',
 		    }		    		    
 		  ]
 		};
@@ -196,7 +196,7 @@ class Website extends React.Component {
 				</div>
 				<hr />
 				<div className="text-center">
-					<h5>Current Gas Fee Numbers</h5>
+					<h5>Real-time gas fee details <small><i>(updates automatically)</i></small></h5>
 					<br />
 					<div className="row d-flex">
 						<div className="col card text-secondary border-secondary bg-transparent">
