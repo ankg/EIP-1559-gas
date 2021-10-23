@@ -7,6 +7,7 @@ import { Line } from 'react-chartjs-2';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "jquery/dist/jquery.min.js";
 import "bootstrap/dist/js/bootstrap.min.js";
+import fullLogo from "./full_logo.svg";
 
 class Website extends React.Component {
 	constructor(props){
@@ -195,7 +196,7 @@ class Website extends React.Component {
 					</div>
 					<div className="col-4">
 						<div className="col card ml-2 mt-5 text-success border-success bg-transparent">
-						  <div className="card-header bg-transparent"><b>Network</b></div>
+						  <div className="card-header bg-transparent"><b>Network</b> <small>(powered by <img src={fullLogo} height={17}/>)</small></div>
 						  <div className="card-body text-success">
 						    <p className="card-text display-6">Ethereum Mainnet</p>
 						  </div>
