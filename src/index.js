@@ -41,17 +41,17 @@ class Website extends React.Component {
 
 	async calculateValues(web3, currGasPrice, feeHistory, currPriorityFee) {
 
-		//if currGasPrice is not equal to baseFee
+		//Since currGasPrice is the total fee
 		const currBaseFee = currGasPrice - currPriorityFee;
-		let gasFeeArr = [];
-		let baseFeeArr = [];
-		let priorityFeeArr = [];
+		let gasFeeArr = [], baseFeeArr = [], priorityFeeArr = [];
+
 		let avgFee = 0;
 		for(let i=0;i<20;i++)
 		{
 			let blockBaseFee = parseInt(feeHistory["baseFeePerGas"][i], 16);
 			let blockPriorityFee = parseInt(feeHistory["reward"][i][0], 16);
 
+			//populate total Fee, Base Fee and Priority Fee arrays
 			let totalFee = blockBaseFee + blockPriorityFee; 
 			totalFee = Number(web3.utils.fromWei(String(totalFee), "gwei"));
 
@@ -64,25 +64,36 @@ class Website extends React.Component {
 
 			avgFee += totalFee;
 		};
+		
+		//calculate average fee
 		avgFee /= 20;
 
 		return [currBaseFee, gasFeeArr, baseFeeArr, priorityFeeArr, avgFee];
 	}
 
 	async getCurrentParams(web3) {
-		const currBlockNumber = await web3.eth.getBlockNumber();
-		console.log("The latest block number is " + currBlockNumber);
 
+		//Fetching the current block number
+		const currBlockNumber = await web3.eth.getBlockNumber();
+
+		//Fetching the Current gas price and converting to Gwei
 		let currGasPrice = await web3.eth.getGasPrice();
 		currGasPrice = Number(web3.utils.fromWei(String(currGasPrice), "gwei"));
+
+		//Fetch fee history for last 20 blocks
 		const feeHistory = await web3.eth.getFeeHistory(20,"latest",[50,50]);
 
+		//Fetch the estimated priority fee for now, converted to gwei
 		let currPriorityFee = await web3.eth.getMaxPriorityFeePerGas();
 		currPriorityFee = parseInt(currPriorityFee, 16);
 		currPriorityFee = Number( web3.utils.fromWei(String(currPriorityFee), "gwei") );
 
+		//Take above values and calculate
+		// 1. Avg Fee for last 20 blocks
+		// 2. Total Fee for last 20 blocks
 		const calculated = await this.calculateValues(web3, currGasPrice, feeHistory, currPriorityFee);
 
+		//Init chart params
 		const labels = Array.from({length: 20}, (_, i) => String(i + 1))
 		const data = {
 		  labels: labels,
@@ -155,16 +166,19 @@ class Website extends React.Component {
 	}
 
 	async componentDidMount() {
-		//Initialize alchemy api
+
+		//Initialize alchemy api with WEBSOCKET URL
 		const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
-		//const web3 = createAlchemyWeb3("https://eth-mainnet.alchemyapi.io/v2/G2vhog_V17pUJjNHRFyiCtdPlQt3ChvK");
 		const web3 = createAlchemyWeb3("wss://eth-mainnet.alchemyapi.io/v2/G2vhog_V17pUJjNHRFyiCtdPlQt3ChvK");
+
+		//Subscribe websockets to the event of a new block addition
 		var obj = this;
 		web3.eth.subscribe("newHeads", function(val){
 			console.log("new block emitted");
 			obj.getCurrentParams(web3);
 		});
 
+		//The calulate function that fetches and populates all data
 		this.getCurrentParams(web3);	
 	}
 
