@@ -99,7 +99,7 @@ class Website extends React.Component {
 		      data: calculated[2],
 		      fill: false,
 		      backgroundColor: '#ff9889',
-		      borderColor: 'red',
+		      borderColor: '#ff9889',
 		    },
 		    {
 		      label: 'Total Gas price per gas for block ID',
