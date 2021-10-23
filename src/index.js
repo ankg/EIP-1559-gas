@@ -63,8 +63,8 @@ class Website extends React.Component {
 	}
 
 	async getCurrentParams(web3) {
-		//const currentBlockNumber = await web3.eth.getBlockNumber();
-		//console.log("The latest block number is " + currentBlockNumber);
+		const currBlockNumber = await web3.eth.getBlockNumber();
+		console.log("The latest block number is " + currBlockNumber);
 
 		let currGasPrice = await web3.eth.getGasPrice();
 		currGasPrice = Number(web3.utils.fromWei(String(currGasPrice), "gwei"));
@@ -121,6 +121,7 @@ class Website extends React.Component {
 		};
 
 		this.setState({
+			curreBlockNumber: currBlockNumber,
 			currGasPrice: currGasPrice,
 			feeHistory: feeHistory,
 			currPriorityFee: Number(currPriorityFee.toFixed(2)),
@@ -135,7 +136,13 @@ class Website extends React.Component {
 	async componentDidMount() {
 		//Initialize alchemy api
 		const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
-		const web3 = createAlchemyWeb3("https://eth-mainnet.alchemyapi.io/v2/G2vhog_V17pUJjNHRFyiCtdPlQt3ChvK");
+		//const web3 = createAlchemyWeb3("https://eth-mainnet.alchemyapi.io/v2/G2vhog_V17pUJjNHRFyiCtdPlQt3ChvK");
+		const web3 = createAlchemyWeb3("wss://eth-mainnet.alchemyapi.io/v2/G2vhog_V17pUJjNHRFyiCtdPlQt3ChvK");
+		var obj = this;
+		web3.eth.subscribe("newHeads", function(val){
+			console.log("new block emitted");
+			obj.getCurrentParams(web3);
+		});
 
 		this.getCurrentParams(web3);	
 	}
