@@ -44,22 +44,29 @@ class Website extends React.Component {
 		//if currGasPrice is not equal to baseFee
 		const currBaseFee = currGasPrice - currPriorityFee;
 		let gasFeeArr = [];
+		let baseFeeArr = [];
+		let priorityFeeArr = [];
 		let avgFee = 0;
 		for(let i=0;i<20;i++)
 		{
-			const blockBaseFee = parseInt(feeHistory["baseFeePerGas"][i], 16);
-			const blockPriorityFee = parseInt(feeHistory["reward"][i][0], 16);
+			let blockBaseFee = parseInt(feeHistory["baseFeePerGas"][i], 16);
+			let blockPriorityFee = parseInt(feeHistory["reward"][i][0], 16);
 
 			let totalFee = blockBaseFee + blockPriorityFee; 
 			totalFee = Number(web3.utils.fromWei(String(totalFee), "gwei"));
 
 			gasFeeArr.push(totalFee);
-			
+			blockBaseFee = Number(web3.utils.fromWei(String(blockBaseFee), "gwei"));
+			blockPriorityFee = Number(web3.utils.fromWei(String(blockPriorityFee), "gwei"));;
+
+			baseFeeArr.push(blockBaseFee);
+			priorityFeeArr.push(blockPriorityFee);
+
 			avgFee += totalFee;
 		};
 		avgFee /= 20;
 
-		return [currBaseFee, gasFeeArr, avgFee];
+		return [currBaseFee, gasFeeArr, baseFeeArr, priorityFeeArr, avgFee];
 	}
 
 	async getCurrentParams(web3) {
@@ -81,12 +88,26 @@ class Website extends React.Component {
 		  labels: labels,
 		  datasets: [
 		    {
-		      label: 'Gas price for block ID',
-		      data: calculated[1],
+		      label: 'Avg Priority Fee block ID',
+		      data: calculated[3],
 		      fill: true,
 		      backgroundColor: '#ADD8E6',
+		      borderColor: 'green',
+		    },
+		    {
+		      label: 'Base Fee block ID',
+		      data: calculated[2],
+		      fill: false,
+		      backgroundColor: '#ADD8E6',
+		      borderColor: 'red',
+		    },
+		    {
+		      label: 'Gas price for block ID',
+		      data: calculated[1],
+		      fill: false,
+		      backgroundColor: '#ADD8E6',
 		      borderColor: '#1E5162',
-		    }
+		    }		    		    
 		  ]
 		};
 
@@ -127,7 +148,7 @@ class Website extends React.Component {
 			currPriorityFee: Number(currPriorityFee.toFixed(2)),
 			currBaseFee: Number(calculated[0].toFixed(2)),
 			gasFeeArr: calculated[1],
-			avgFee: Number(calculated[2].toFixed(2)),
+			avgFee: Number(calculated[4].toFixed(2)),
 			chartData: data,
 			options: options
 		})
