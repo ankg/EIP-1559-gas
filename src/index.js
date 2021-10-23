@@ -16,7 +16,7 @@ class Website extends React.Component {
 		  labels: ['1'],
 		  datasets: [
 		    {
-		      label: 'Gas price for last 20 blocks',
+		      label: 'Gas price',
 		      data: [1],
 		      fill: false,
 		      backgroundColor: '#ADD8E6',
@@ -41,7 +41,7 @@ class Website extends React.Component {
 
 	async calculateValues(web3, currGasPrice, feeHistory, currPriorityFee) {
 
-		//Since currGasPrice is the total fee
+		//Since currGasPrice is the total gas fee
 		const currBaseFee = currGasPrice - currPriorityFee;
 		let gasFeeArr = [], baseFeeArr = [], priorityFeeArr = [];
 
@@ -64,7 +64,7 @@ class Website extends React.Component {
 
 			avgFee += totalFee;
 		};
-		
+
 		//calculate average fee
 		avgFee /= 20;
 
@@ -99,21 +99,21 @@ class Website extends React.Component {
 		  labels: labels,
 		  datasets: [
 		    {
-		      label: 'Avg Priority Fee per gas for block ID',
+		      label: 'Median Priority Fee per gas',
 		      data: calculated[3],
 		      fill: true,
 		      backgroundColor: '#ADD8E6',
 		      borderColor: '#003C54',
 		    },
 		    {
-		      label: 'Base Fee per gas for block ID',
+		      label: 'Base Fee per gas',
 		      data: calculated[2],
 		      fill: false,
 		      backgroundColor: '#ff9889',
 		      borderColor: '#ff9889',
 		    },
 		    {
-		      label: 'Total Gas price per gas for block ID',
+		      label: 'Total Gas price per gas',
 		      data: calculated[1],
 		      fill: false,
 		      backgroundColor: '#ffc837',//'#ccf6ef',
@@ -133,7 +133,7 @@ class Website extends React.Component {
 		    },
 		    x: {
 		    	title: {
-		    		text: "Block ID (old to new)",
+		    		text: "Block ID (L to R => old to new)",
 		    		display: true
 		    	}
 		    }
@@ -174,7 +174,7 @@ class Website extends React.Component {
 		//Subscribe websockets to the event of a new block addition
 		var obj = this;
 		web3.eth.subscribe("newHeads", function(val){
-			console.log("new block emitted");
+			//new block emitted
 			obj.getCurrentParams(web3);
 		});
 
@@ -201,7 +201,7 @@ class Website extends React.Component {
 						  </div>
 						</div>
 						<div className="col card ml-2 mt-4 text-secondary border-secondary bg-transparent">
-						  <div className="card-header bg-transparent"><b>Avg Gas fee for last 20 blocks</b></div>
+						  <div className="card-header bg-transparent"><b>Avg gas price for last 20 blocks</b></div>
 						  <div className="card-body text-secondary">
 						    <p className="card-text display-5">{this.state.avgFee} Gwei</p>
 						  </div>
@@ -226,7 +226,7 @@ class Website extends React.Component {
 						  </div>
 						</div>
 						<div className="col card text-dark border-dark bg-transparent">
-						  <div className="card-header bg-transparent"><b>Current Priority Fee</b></div>
+						  <div className="card-header bg-transparent"><b>Max current Priority Fee</b></div>
 						  <div className="card-body text-dark">
 						    <p className="card-text display-5">{this.state.currPriorityFee} Gwei</p>
 						  </div>
